@@ -1,4 +1,4 @@
-package com.ti4all.a1na
+package com.example.kspatual
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.ti4all.a1na", appContext.packageName)
+        assertEquals("com.example.kspatual", appContext.packageName)
     }
 }

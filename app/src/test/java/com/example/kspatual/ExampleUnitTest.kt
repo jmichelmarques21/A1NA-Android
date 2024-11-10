@@ -1,4 +1,4 @@
-package com.ti4all.a1na
+package com.example.kspatual
 
 import org.junit.Test
 

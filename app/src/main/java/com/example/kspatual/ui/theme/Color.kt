@@ -1,4 +1,4 @@
-package com.ti4all.a1na.ui.theme
+package com.example.kspatual.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

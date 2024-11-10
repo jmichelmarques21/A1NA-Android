@@ -19,5 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "A1NA"
+rootProject.name = "KSPatual"
 include(":app")
+ 
