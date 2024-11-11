@@ -3,17 +3,20 @@ package com.example.kspatual
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.kspatual.data.AppDatabase
-import com.example.kspatual.data.UserWithAccounts
-import com.example.kspatual.model.AccountModel
-import com.example.kspatual.model.UserModel
 import com.example.kspatual.ui.theme.KSPatualTheme
-import com.example.kspatual.viewmodel.GreetingCard
+import com.example.kspatual.view.Tela1
+import com.example.kspatual.view.Tela2
+import com.example.kspatual.view.Tela3
+import com.example.kspatual.viewmodel.*
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -29,73 +32,42 @@ class MainActivity : ComponentActivity() {
         ).build()
 
         lifecycleScope.launch {
-            //insertSampleData()
-            val account = database.accountDao().get(2) // Recebe o account de ID 2
-            if (account != null) {
-                // Executa a função de depósito
-                deposit(database, account, "dollar", 200.0, 5.6)
-            }
+
+            //insertSampleData(database)
+            //val account = database.accountDao().get(2)
+            //if (account != null) {
+
+                //deposit(database, account, "dollar", 200.0, 5.6)
+            //}
         }
 
         setContent {
             KSPatualTheme {
-
-                UserListScreen(database = database)
+                NavGraph(database)
+                //UserListScreen(database = database)
             }
         }
     }
 
-    private suspend fun insertSampleData() {
 
-        val account2 = AccountModel(id = 2, userId = 2, real = 200.0, dollar = 50.0, euro = 30.0)
-        database.accountDao().insert(account2)
+}
 
-
-    }
+fun navigateTo(navController: NavController, route: String) {
+    navController.navigate(route)
 }
 
 @Composable
-fun UserListScreen(database: AppDatabase) {
-    var usersWithAccounts by remember { mutableStateOf<List<UserWithAccounts>>(emptyList()) }
-
-    LaunchedEffect(Unit) {
-
-        usersWithAccounts = database.userDao().getAllUserWithAccounts(2)
-
-    }
-
-    LazyColumn {
-        items(usersWithAccounts) { userWithAccounts ->
-            GreetingCard(userWithAccounts)
-        }
+fun NavGraph(database: AppDatabase) {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "tela1") {
+        composable("tela1") { Tela1(navController = navController) }
+        composable("tela2") { Tela2(navController = navController, database) }
+        composable("tela3") { Tela3(navController = navController) }
     }
 }
 
-public suspend fun deposit(
-    database: AppDatabase,
-    account: AccountModel,
-    moeda: String,
-    valor: Double,
-    valorMoeda: Double
-) {
-    var deposito = valor * valorMoeda
 
-    // Atualiza o saldo dependendo da moeda
-    when (moeda) {
-        "dollar" -> {
-            account.dollar += deposito
-        }
-        "euro" -> {
-            account.euro += deposito
-        }
-        "real" -> {
-            account.real += deposito
-        }
-    }
 
-    // Atualiza a conta no banco de dados
-    database.accountDao().update(account)
-}
 
 
 

@@ -24,4 +24,8 @@ interface UserDao {
     @Transaction
     @Query("SELECT * FROM users WHERE id = :userId")
     suspend fun getAllUserWithAccounts(userId: Int): List<UserWithAccounts>
+
+    @Transaction
+    @Query("SELECT * FROM users ")
+    suspend fun getAllUserWithALLAccounts(): List<UserWithAccounts>
 }
