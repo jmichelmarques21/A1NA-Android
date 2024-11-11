@@ -11,8 +11,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
+import com.example.kspatual.dao.AccountDao
 import com.example.kspatual.data.AppDatabase
+import com.example.kspatual.model.AccountModel
+import com.example.kspatual.model.UserModel
 import com.example.kspatual.ui.theme.KSPatualTheme
+import com.example.kspatual.ui.theme.NavGrap
 import com.example.kspatual.view.Tela1
 import com.example.kspatual.view.Tela2
 import com.example.kspatual.view.Tela3
@@ -32,7 +36,10 @@ class MainActivity : ComponentActivity() {
         ).build()
 
         lifecycleScope.launch {
-
+            val user = UserModel(name = "Lucas Matheus", cpf = "08645112990")
+            val accont = AccountModel(userId = 1 , real = 120.00, dollar = 120.00, euro = 100.0)
+            //database.userDao().insert(user)
+            //database.accountDao().insert(accont)
             //insertSampleData(database)
             //val account = database.accountDao().get(2)
             //if (account != null) {
@@ -43,27 +50,13 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             KSPatualTheme {
-                NavGraph(database)
+                NavGrap(database)
                 //UserListScreen(database = database)
             }
         }
     }
 
 
-}
-
-fun navigateTo(navController: NavController, route: String) {
-    navController.navigate(route)
-}
-
-@Composable
-fun NavGraph(database: AppDatabase) {
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "tela1") {
-        composable("tela1") { Tela1(navController = navController) }
-        composable("tela2") { Tela2(navController = navController, database) }
-        composable("tela3") { Tela3(navController = navController) }
-    }
 }
 
 

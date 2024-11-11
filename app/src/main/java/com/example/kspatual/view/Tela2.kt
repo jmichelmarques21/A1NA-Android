@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.kspatual.data.AppDatabase
-import com.example.kspatual.navigateTo
+import com.example.kspatual.ui.theme.navigateTo
 import com.example.kspatual.viewmodel.UserListScreen
 
 @Composable
@@ -19,7 +19,7 @@ fun Tela2(navController: NavController,database: AppDatabase) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Red),
+            .background(Color.White),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -27,7 +27,7 @@ fun Tela2(navController: NavController,database: AppDatabase) {
             verticalArrangement = Arrangement.Center
         ) {
             UserListScreen(database)
-            Text(text = "Tela Vermelha", color = Color.White)
+            Text(text = "Tela Vermelha", color = Color.Black)
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = { navigateTo(navController, "tela1") }) {
                 Text(text = "tela1")
