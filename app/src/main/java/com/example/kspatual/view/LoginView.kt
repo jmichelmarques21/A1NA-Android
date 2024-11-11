@@ -10,7 +10,7 @@ import androidx.navigation.NavController
 import com.example.kspatual.ui.theme.login
 
 @Composable
-fun Tela1(navController: NavController) {
+fun LoginView(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()

@@ -1,5 +1,6 @@
 package com.example.kspatual
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,7 +18,6 @@ import com.example.kspatual.model.AccountModel
 import com.example.kspatual.model.UserModel
 import com.example.kspatual.ui.theme.KSPatualTheme
 import com.example.kspatual.ui.theme.NavGrap
-import com.example.kspatual.view.Tela1
 import com.example.kspatual.view.Tela2
 import com.example.kspatual.view.Tela3
 import com.example.kspatual.viewmodel.*
