@@ -23,6 +23,13 @@ import com.example.kspatual.view.Tela3
 import com.example.kspatual.viewmodel.*
 import kotlinx.coroutines.launch
 
+import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Text
+import androidx.compose.ui.graphics.Color
+import com.example.kspatual.api.getCotacoes
+
+
 class MainActivity : ComponentActivity() {
     private lateinit var database: AppDatabase
 
@@ -52,16 +59,39 @@ class MainActivity : ComponentActivity() {
             KSPatualTheme {
                 NavGrap(database)
                 //UserListScreen(database = database)
+                // CurrencyScreen()
             }
         }
     }
 
+    @Composable //EXEMPLO DE TELA, APENAS PARA DESENVOLVIMENTO, ** → EXCLUIR MAIS TARDE ← **
+    fun CurrencyScreen() {
+        val scope = rememberCoroutineScope()
+        var cotaUSD by remember { mutableStateOf("Carregando...") }
+        var cotaEUR by remember { mutableStateOf("Carregando...") }
+        var cotaBTC by remember { mutableStateOf("Carregando...") }
+        var errorMessage by remember { mutableStateOf<String?>(null) }
 
+        LaunchedEffect(Unit) {
+            scope.launch {
+                try {
+                    val quotes = getCotacoes()
+                    cotaUSD = quotes.usdToBrl
+                    cotaEUR = quotes.eurToBrl
+                    cotaBTC = quotes.btcToBrl
+                } catch (e: Exception) {
+                    errorMessage = "Erro ao buscar cotações: ${e.message}"
+                }
+            }
+        }
+
+        Column {
+            Text(text = "USD para BRL: $cotaUSD")
+            Text(text = "EUR para BRL: $cotaEUR")
+            Text(text = "BTC para BRL: $cotaBTC")
+            errorMessage?.let {
+                Text(text = it, color = Color.Red)
+            }
+        }
+    }
 }
-
-
-
-
-
-
-
