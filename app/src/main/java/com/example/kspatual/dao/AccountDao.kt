@@ -14,7 +14,7 @@ interface AccountDao {
     @Delete
     suspend fun delete(account: AccountModel)
 
-    @Query("SELECT * FROM accounts WHERE id = :id")
+    @Query("SELECT * FROM accounts WHERE userId = :id")
     suspend fun get(id: Int): AccountModel
 
     @Query("SELECT * FROM accounts WHERE userId = :userId")

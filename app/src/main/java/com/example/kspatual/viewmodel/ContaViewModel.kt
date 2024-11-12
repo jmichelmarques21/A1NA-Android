@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.kspatual.api.Cotacoes
 import com.example.kspatual.dao.UserDao
 import com.example.kspatual.data.AppDatabase
 import com.example.kspatual.data.UserWithAccounts
@@ -47,27 +48,22 @@ fun GreetingCard(userWithAccounts: UserWithAccounts) {
 
 public suspend fun deposit(
     database: AppDatabase,
-    account: AccountModel,
     moeda: String,
     valor: Double,
-    valorMoeda: Double
+    cotacoes: Cotacoes
 ) {
-    var deposito = valor * valorMoeda
-
-    // Atualiza o saldo dependendo da moeda
-    when (moeda) {
-        "dollar" -> {
-            account.dollar += deposito
-        }
-        "euro" -> {
-            account.euro += deposito
-        }
-        "real" -> {
-            account.real += deposito
-        }
+    val account = database.accountDao().get(1)
+    val valorConvertido: Double = when (moeda) {
+        "dollar" -> valor * cotacoes.usdToBrl.toDouble()
+        "euro" -> valor * cotacoes.eurToBrl.toDouble()
+        "real" -> valor
+        else -> throw IllegalArgumentException("Moeda não suportada")
     }
-
-    // Atualiza a conta no banco de dados
+    when (moeda) {
+        "dollar" -> account.dollar += valorConvertido
+        "euro" -> account.euro += valorConvertido
+        "real" -> account.real += valorConvertido
+    }
     database.accountDao().update(account)
 }
 
