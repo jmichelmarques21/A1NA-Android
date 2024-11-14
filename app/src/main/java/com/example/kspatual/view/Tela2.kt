@@ -21,7 +21,7 @@ fun Tela2(navController: NavController,database: AppDatabase) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF5F5F5)),
+            .background(Color(0xFFcadae3)),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -31,7 +31,7 @@ fun Tela2(navController: NavController,database: AppDatabase) {
         ) {
             UserListScreen(database)
             Text(
-                text = "Tela Vermelha",
+                text = "Meu Perfil",
                 color = Color.Black,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
@@ -44,7 +44,7 @@ fun Tela2(navController: NavController,database: AppDatabase) {
                 Text(text = "Log Out")
             }
             Button(onClick = { navigateTo(navController, "tela3") }) {
-                Text(text = "tela 3")
+                Text(text = "Realizar depósito")
             }
         }}
     }

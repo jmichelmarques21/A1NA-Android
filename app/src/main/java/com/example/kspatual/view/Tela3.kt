@@ -19,7 +19,7 @@ fun Tela3(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF388E3C)),
+            .background(Color(0xFFcadae3)),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -29,7 +29,7 @@ fun Tela3(navController: NavController) {
         ) {
             Text(
                 text = "Faça um depósito",
-                color = Color.White,
+                color = Color(0xff000000),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -40,8 +40,8 @@ fun Tela3(navController: NavController) {
                 Button(onClick = { navigateTo(navController, "tela1") }) {
                     Text(text = "Log Out")
                 }
-                Button(onClick = { navigateTo(navController, "Perfil") }) {
-                    Text(text = "tela2")
+                Button(onClick = { navigateTo(navController, "tela2") }) {
+                    Text(text = "Meu Perfil")
                 }
             }
         }
