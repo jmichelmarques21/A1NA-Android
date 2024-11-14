@@ -8,7 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.kspatual.ui.theme.navigateTo
 
@@ -17,20 +19,30 @@ fun Tela3(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Green),
+            .background(Color(0xFF388E3C)),
         contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(16.dp)
         ) {
-            Text(text = "Tela Verde", color = Color.White)
+            Text(
+                text = "Faça um depósito",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
             Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = { navigateTo(navController, "tela1") }) {
-                Text(text = "tela1")
-            }
-            Button(onClick = { navigateTo(navController, "tela2") }) {
-                Text(text = "tela2")
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(onClick = { navigateTo(navController, "tela1") }) {
+                    Text(text = "Log Out")
+                }
+                Button(onClick = { navigateTo(navController, "Perfil") }) {
+                    Text(text = "tela2")
+                }
             }
         }
     }

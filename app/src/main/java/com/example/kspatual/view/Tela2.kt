@@ -8,7 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.kspatual.data.AppDatabase
 import com.example.kspatual.ui.theme.navigateTo
@@ -19,22 +21,31 @@ fun Tela2(navController: NavController,database: AppDatabase) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(Color(0xFFF5F5F5)),
         contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(16.dp)
         ) {
             UserListScreen(database)
-            Text(text = "Tela Vermelha", color = Color.Black)
+            Text(
+                text = "Tela Vermelha",
+                color = Color.Black,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+                )
             Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ){
             Button(onClick = { navigateTo(navController, "tela1") }) {
-                Text(text = "tela1")
+                Text(text = "Log Out")
             }
             Button(onClick = { navigateTo(navController, "tela3") }) {
-                Text(text = "tela3")
+                Text(text = "tela 3")
             }
-        }
+        }}
     }
 }

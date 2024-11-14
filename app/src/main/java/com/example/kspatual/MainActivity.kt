@@ -50,16 +50,16 @@ class MainActivity : ComponentActivity() {
             //insertSampleData(database)
             //val account = database.accountDao().get(2)
             //if (account != null) {
-            val quotes = getCotacoes()
-                deposit(database,  "euro", 200.0, quotes)
+
+                //deposit(database, account, "dollar", 200.0, 5.6)
             //}
         }
 
         setContent {
             KSPatualTheme {
                 NavGrap(database)
-                CurrencyScreen()
                 //UserListScreen(database = database)
+                // CurrencyScreen()
             }
         }
     }
