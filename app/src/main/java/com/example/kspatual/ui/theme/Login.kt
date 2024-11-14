@@ -69,7 +69,7 @@ fun login(navController: NavController) {
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text(text = "Informe a senha", color = Color(0xff070808)) },
+            label = { Text(text = "Insira a senha", color = Color(0xff070808)) },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -79,7 +79,7 @@ fun login(navController: NavController) {
             onClick = { navigateTo(navController, "tela2") },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Sign In", fontSize = 18.sp)
+            Text(text = "Logar", fontSize = 18.sp)
         }
     }
 }

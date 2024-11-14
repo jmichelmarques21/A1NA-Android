@@ -33,7 +33,7 @@ fun GreetingCard(userWithAccounts: UserWithAccounts) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = "Bem-vindo, ${user.name}!")
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "User_id: ${user.id}")
+        Text(text = "User id: ${user.id}")
         Spacer(modifier = Modifier.height(8.dp))
 
         account?.let {

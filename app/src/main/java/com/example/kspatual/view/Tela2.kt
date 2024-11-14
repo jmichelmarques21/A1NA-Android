@@ -17,35 +17,58 @@ import com.example.kspatual.ui.theme.navigateTo
 import com.example.kspatual.viewmodel.UserListScreen
 
 @Composable
-fun Tela2(navController: NavController,database: AppDatabase) {
-    Box(
+fun Tela2(navController: NavController, database: AppDatabase) {
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFcadae3)),
-        contentAlignment = Alignment.Center
+            .background(Color(0xFFcadae3)) // Fundo cinza claro
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center // Centraliza verticalmente
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(16.dp)
+        // Bloco 1 - Cabeçalho "Meu Perfil"
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFcadae3))
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
         ) {
-            UserListScreen(database)
             Text(
                 text = "Meu Perfil",
                 color = Color.Black,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
                 )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ){
+        }
+
+        Spacer(modifier = Modifier.height(16.dp)) // Espaçamento entre os blocos
+
+        // Bloco 2 - Saudações e saldos do usuário
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFcadae3))
+                .padding(16.dp)
+        ) {
+            UserListScreen(database)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp)) // Espaçamento entre os blocos
+
+        // Bloco 3 - Botões
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
+        ) {
             Button(onClick = { navigateTo(navController, "tela1") }) {
                 Text(text = "Log Out")
             }
             Button(onClick = { navigateTo(navController, "tela3") }) {
-                Text(text = "Realizar depósito")
+                Text(text = "Realizar Depósito")
             }
-        }}
+        }
     }
 }

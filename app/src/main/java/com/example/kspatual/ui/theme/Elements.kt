@@ -20,7 +20,7 @@ fun NavGrap(database: AppDatabase) {
     NavHost(navController = navController, startDestination = "tela1") {
         composable("tela1") { LoginView(navController = navController) }
         composable("tela2") { Tela2(navController = navController, database) }
-        composable("tela3") { Tela3(navController = navController) }
+        composable("tela3") { Tela3(navController = navController, database) }
     }
 }
 

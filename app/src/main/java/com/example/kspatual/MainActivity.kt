@@ -45,14 +45,14 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             val user = UserModel(name = "Lucas Matheus", cpf = "08645112990")
             val accont = AccountModel(userId = 1 , real = 120.00, dollar = 120.00, euro = 100.0)
-            //database.userDao().insert(user)
-            //database.accountDao().insert(accont)
-            //insertSampleData(database)
-            //val account = database.accountDao().get(2)
-            //if (account != null) {
+            database.userDao().insert(user)
+            database.accountDao().insert(accont)
+            insertSampleData(database)
+            val account = database.accountDao().get(2)
+            if (account != null) {
 
-                //deposit(database, account, "dollar", 200.0, 5.6)
-            //}
+                deposit(database, "dollar", 200.0, getCotacoes())
+            }
         }
 
         setContent {
