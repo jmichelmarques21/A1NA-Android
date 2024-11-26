@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.kspatual.data.AppDatabase
-import com.example.kspatual.ui.theme.navigateTo
 import com.example.kspatual.viewmodel.UserListScreen
 
 @Composable
@@ -39,7 +38,7 @@ fun Tela2(navController: NavController, database: AppDatabase) {
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
-                )
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp)) // Espaçamento entre os blocos
@@ -51,7 +50,7 @@ fun Tela2(navController: NavController, database: AppDatabase) {
                 .background(Color(0xFFcadae3))
                 .padding(16.dp)
         ) {
-            UserListScreen(database)
+            UserListScreen(database) // Exibe a lista de usuários usando o banco de dados
         }
 
         Spacer(modifier = Modifier.height(16.dp)) // Espaçamento entre os blocos
@@ -63,10 +62,10 @@ fun Tela2(navController: NavController, database: AppDatabase) {
                 .padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
         ) {
-            Button(onClick = { navigateTo(navController, "tela1") }) {
+            Button(onClick = { navController.navigate("tela1") }) {
                 Text(text = "Log Out")
             }
-            Button(onClick = { navigateTo(navController, "tela3") }) {
+            Button(onClick = { navController.navigate("tela3") }) {
                 Text(text = "Realizar Depósito")
             }
         }

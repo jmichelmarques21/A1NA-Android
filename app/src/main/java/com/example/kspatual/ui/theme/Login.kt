@@ -81,5 +81,13 @@ fun login(navController: NavController) {
         ) {
             Text(text = "Logar", fontSize = 18.sp)
         }
+
+        Button(
+            onClick = { navController.navigate("cadastro") },
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Text(text = "Criar Conta")
+        }
+
     }
 }
