@@ -7,5 +7,7 @@ import androidx.room.PrimaryKey
 data class UserModel(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
-    val cpf: String
+    val cpf: String,
+    val email: String,
+    val senha: String
 )

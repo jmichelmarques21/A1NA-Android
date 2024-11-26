@@ -21,6 +21,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.Color
 import com.example.kspatual.api.getCotacoes
+import com.example.kspatual.ui.theme.login
+import com.example.kspatual.view.CadastroView
+import com.example.kspatual.view.LoginView
 import com.example.kspatual.viewmodel.deposit
 import com.example.kspatual.viewmodel.insertSampleData
 
@@ -37,7 +40,7 @@ class MainActivity : ComponentActivity() {
         ).build()
 
         lifecycleScope.launch {
-            val user = UserModel(name = "Lucas Matheus", cpf = "08645112990")
+            val user = UserModel(name = "Lucas Matheus", email = "teste@teste.com", senha = "teste" ,cpf = "08645112990")
             val account = AccountModel(userId = 1, real = 120.00, dollar = 120.00, euro = 100.0)
             database.userDao().insert(user)
             database.accountDao().insert(account)
@@ -61,13 +64,21 @@ class MainActivity : ComponentActivity() {
 fun AppNavHost(database: AppDatabase) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "tela2") {
-        composable("tela2") {
-            Tela2(navController, database) // Passa o banco de dados para a Tela2
+    NavHost(navController = navController, startDestination = "login") {
+        composable("login") {
+            LoginView(navController) // Passa o banco de dados para a Tela2
+        }
+
+        composable("cadastro"){
+            CadastroView(navController, database)
+        }
+
+        composable("tela2"){
+            Tela2(navController, database)
         }
 
         composable("tela3") {
-            Tela3(navController) // Exemplo para navegar para outra tela
+            Tela3(navController, database) // Exemplo para navegar para outra tela
         }
 
         // Adicione outras telas aqui

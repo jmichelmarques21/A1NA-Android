@@ -85,7 +85,7 @@ fun UserListScreen(database: AppDatabase) {
 }
 
 public suspend fun insertSampleData(database: AppDatabase) {
-    val user = UserModel(name = "LucasLucas", cpf = "08645119990")
+    val user = UserModel(name = "LucasLucas", cpf = "08645119990", email = "teste@teste.com", senha = "teste")
     val account2 = AccountModel(userId = 3, real = 200.0, dollar = 50.0, euro = 30.0)
     database.userDao().insert(user)
     database.accountDao().insert(account2)
