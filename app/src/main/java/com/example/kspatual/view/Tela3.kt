@@ -1,5 +1,6 @@
 package com.example.kspatual.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,28 +16,39 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.kspatual.api.getCotacoes
 import com.example.kspatual.data.AppDatabase
 import com.example.kspatual.ui.theme.navigateTo
+import com.example.kspatual.viewmodel.deposit
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun Tela3(navController: NavController, database: AppDatabase) {
-    // Variável para armazenar o valor do depósito
+    // Variáveis para armazenar o valor do depósito e a moeda selecionada
     var valorDeposito by remember { mutableStateOf("") }
+    var moedaSelecionada by remember { mutableStateOf("USD") } // Valor padrão, pode ser alterado.
 
-    // Função para atualizar o saldo no banco de dados
-    fun confirmarDeposito() {
-        val valor = valorDeposito.toFloatOrNull()/*
-        if (valor != null && valor > 0) {
-            CoroutineScope(Dispatchers.IO).launch {
-                // Obter o saldo atual do usuário e adicionar o valor do depósito
-                val usuario = database.userDao().getAllUsers()
-                usuario.saldo += valor
-                database.userDao().updateUsuario(usuario)
-                */
-                // Navegar para a tela "Meu Perfil" após o depósito
-                navigateTo(navController, "tela2")
-            //}
-        //}*/
+    // Função que será executada ao clicar nos botões para fazer o depósito
+    fun fazerDepositoComCotacoes(moeda: String, valor: Double) {
+        // Executa a função assíncrona de depósito, passando a moeda e o valor
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                // Chama getCotacoes dentro de uma corrotina
+                val cotacoes = getCotacoes()
+
+                // Chama a função de depósito com as cotações obtidas
+                deposit(database, moeda, valor, cotacoes)
+
+                // Navegar para o perfil após o depósito
+                CoroutineScope(Dispatchers.Main).launch {
+                    navigateTo(navController, "tela2")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     Box(
@@ -76,9 +88,25 @@ fun Tela3(navController: NavController, database: AppDatabase) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botão para confirmar o depósito
-            Button(onClick = { confirmarDeposito() }) {
-                Text(text = "Confirmar Depósito")
+            // Botões para selecionar a moeda e realizar o depósito
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                listOf("real", "euro", "dollar").forEach { moeda ->
+                    Button(onClick = {
+                        // Agora, a lógica de depósito é executada aqui através da função
+                        val valor = valorDeposito.toDoubleOrNull()
+                        if (valor != null && valor > 0) {
+                            fazerDepositoComCotacoes(moeda, valor) // Chamando a função criada
+                        } else {
+                            // Exibir mensagem de erro para o usuário
+                            println("Por favor, insira um valor válido.")
+                        }
+                    }) {
+                        Text(text = moeda)
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
