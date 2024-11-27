@@ -1,6 +1,7 @@
 package com.example.kspatual.dao
 
 
+import android.provider.ContactsContract.CommonDataKinds.Email
 import androidx.room.*
 import com.example.kspatual.data.UserWithAccounts
 import com.example.kspatual.model.UserModel
@@ -20,6 +21,9 @@ interface UserDao {
     @Query("SELECT * FROM USERS WHERE ID = :id")
     suspend fun get(id: Int): UserModel
 
+    @Query("SELECT * FROM USERS WHERE senha = :senha AND email = :email")
+    suspend fun login(senha: String,email: String): UserModel
+
     @Query("SELECT * FROM users")
     suspend fun getAllUsers(): List<UserModel>
 
@@ -30,4 +34,6 @@ interface UserDao {
     @Transaction
     @Query("SELECT * FROM users ")
     suspend fun getAllUserWithALLAccounts(): List<UserWithAccounts>
+
+
 }
