@@ -92,4 +92,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
+    implementation(libs.compose.animation)
+    implementation(libs.compose.runtime)
+
 }
