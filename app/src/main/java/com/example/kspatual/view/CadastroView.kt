@@ -1,5 +1,6 @@
 package com.example.kspatual.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -7,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -14,7 +16,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.kspatual.data.AppDatabase
 import com.example.kspatual.model.UserModel
-import com.example.kspatual.model.AccountModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -25,7 +26,7 @@ fun CadastroView(navController: NavController, database: AppDatabase) {
     var nome by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
-    var cpf by remember { mutableStateOf("") }
+    var cpf by remember { mutableStateOf("")}
 
     Column(
         modifier = Modifier
@@ -67,22 +68,15 @@ fun CadastroView(navController: NavController, database: AppDatabase) {
             onValueChange = { cpf = it },
             label = { Text("CPF") },
             modifier = Modifier.fillMaxWidth()
+
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
                 coroutineScope.launch {
-                    val user = UserModel(name = nome.trim(), email = email.trim(), senha = senha.trim(), cpf = cpf.trim())
-                    val userId = database.userDao().insert(user) // Retorna o ID do usuário criado
-
-                    val account = AccountModel(
-                        userId = userId.toInt(),
-                        real = 0.0,
-                        dollar = 0.0,
-                        euro = 0.0
-                    )
-                    database.accountDao().insert(account) // Insere a conta vinculada
-                    navController.popBackStack() // Volta para a tela de login
+                    val user = UserModel(name = nome, email = email, senha = senha, cpf = cpf)
+                    database.userDao().insert(user) // Insere o usuário no banco de dados
+                    navController.popBackStack() // Retorna para a tela de login
                 }
             },
             modifier = Modifier.fillMaxWidth()

@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.kspatual.data.AppDatabase
+import com.example.kspatual.model.AccountModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -74,6 +75,17 @@ fun LoginView(navController: NavController, database: AppDatabase) {
                             if (user != null) {
                                 loginErro = false
                                 println("Usuário encontrado: ${user.name}, ID: ${user.id}")
+
+                                // Verifica se o usuário já tem uma conta
+                                val userAccounts = database.accountDao().getAccountsForUser(user.id)
+                                if (userAccounts.isNullOrEmpty()) {
+                                    // Cria uma nova conta se nenhuma for encontrada
+                                    val account = AccountModel(userId = user.id, real = 100.0, dollar = 50.0, euro = 30.0)
+                                    database.accountDao().insert(account)
+                                    println("Conta criada para o usuário: ${user.name}")
+                                } else {
+                                    println("Usuário já possui uma conta.")
+                                }
 
                                 // Navegar para Tela2 com o userId
                                 navController.navigate("tela2/${user.id}")
