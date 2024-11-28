@@ -1,5 +1,6 @@
 package com.example.kspatual.view
 
+import android.content.Intent
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,6 +33,8 @@ fun Tela2(navController: NavController, database: AppDatabase) {
             cotacoes = getCotacoes()
         }
     }
+
+    val context = LocalContext.current // Contexto para uso no Intent
 
     Box(
         modifier = Modifier
@@ -90,7 +94,7 @@ fun Tela2(navController: NavController, database: AppDatabase) {
                 Button(
                     onClick = {
                         navController.navigate("login") {
-                            popUpTo(0){ inclusive = true } // Remove todas as telas anteriores
+                            popUpTo(0) { inclusive = true } // Remove todas as telas anteriores
                         }
                     }
                 ) {
@@ -100,8 +104,38 @@ fun Tela2(navController: NavController, database: AppDatabase) {
                     Text(text = "Realizar Depósito")
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Botão de Compartilhamento
+            Button(
+                onClick = {
+                    cotacoes?.let {
+                        shareCotacoes(context, it) // Chama a função de compartilhamento
+                    }
+                }
+            ) {
+                Text(text = "Compartilhar Cotações")
+            }
         }
     }
+}
+
+fun shareCotacoes(context: android.content.Context, cotacoes: Cotacoes) {
+    val shareText = """
+        Cotações Atualizadas:
+        USD/BRL: ${cotacoes.usdToBrl}
+        EUR/BRL: ${cotacoes.eurToBrl}
+        BTC/BRL: ${cotacoes.btcToBrl}
+    """.trimIndent()
+
+    val sendIntent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, shareText)
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+    context.startActivity(shareIntent)
 }
 
 @Composable
