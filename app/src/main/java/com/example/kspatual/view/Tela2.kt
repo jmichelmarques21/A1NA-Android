@@ -87,7 +87,13 @@ fun Tela2(navController: NavController, database: AppDatabase) {
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
             ) {
-                Button(onClick = { navController.navigate("tela1") }) {
+                Button(
+                    onClick = {
+                        navController.navigate("login") {
+                            popUpTo(0){ inclusive = true } // Remove todas as telas anteriores
+                        }
+                    }
+                ) {
                     Text(text = "Log Out")
                 }
                 Button(onClick = { navController.navigate("tela3") }) {

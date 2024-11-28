@@ -48,7 +48,7 @@ fun login(navController: NavController) {
             modifier = Modifier.size(150.dp)
         )
         Text(
-            text = "KSP Atual",
+            text = "TeuMacho Bank",
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF0f1114),

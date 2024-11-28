@@ -9,7 +9,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/robber_entering_by_a_window_icon_icons_com_70631"
-        android:label="@string/KPSAtual"
+        android:label="@string/TeuMachoBank"
         android:roundIcon="@mipmap/robber_entering_by_a_window_icon_icons_com_70631"
         android:supportsRtl="true"
         android:theme="@style/Theme.KSPatual"
