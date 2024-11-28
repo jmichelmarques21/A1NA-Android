@@ -15,7 +15,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.kspatual.api.getCotacoes
 import com.example.kspatual.data.AppDatabase
+import com.example.kspatual.viewmodel.deposit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,15 +33,10 @@ fun Tela3(navController: NavController, database: AppDatabase, userId: Int) {
                 // Busca a conta associada ao usuário
                 val account = database.accountDao().getAccountsForUser(userId).firstOrNull()
                 if (account != null) {
-                    // Atualiza o saldo com base na moeda selecionada
-                    when (moeda) {
-                        "real" -> account.real += valor
-                        "dollar" -> account.dollar += valor
-                        "euro" -> account.euro += valor
-                    }
-                    database.accountDao().update(account)
+                    val cotacoes = getCotacoes()
 
-                    // Volta para a Tela2 após o depósito
+                    deposit(database,moeda,valor, cotacoes,account)
+
                     CoroutineScope(Dispatchers.Main).launch {
                         navController.popBackStack()
                     }

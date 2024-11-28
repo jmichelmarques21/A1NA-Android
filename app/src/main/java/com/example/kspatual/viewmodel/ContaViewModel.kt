@@ -49,12 +49,12 @@ public suspend fun deposit(
     database: AppDatabase,
     moeda: String,
     valor: Double,
-    cotacoes: Cotacoes
+    cotacoes: Cotacoes,
+    account: AccountModel
 ) {
-    val account = database.accountDao().get(1)
     val valorConvertido: Double = when (moeda) {
-        "dollar" -> valor * cotacoes.usdToBrl.toDouble()
-        "euro" -> valor * cotacoes.eurToBrl.toDouble()
+        "dollar" -> valor / cotacoes.usdToBrl.toDouble()
+        "euro" -> valor / cotacoes.eurToBrl.toDouble()
         "real" -> valor
         else -> throw IllegalArgumentException("Moeda não suportada")
     }
