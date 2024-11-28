@@ -1,6 +1,5 @@
 package com.example.kspatual.view
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,34 +15,36 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.kspatual.api.getCotacoes
 import com.example.kspatual.data.AppDatabase
-import com.example.kspatual.ui.theme.navigateTo
-import com.example.kspatual.viewmodel.deposit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun Tela3(navController: NavController, database: AppDatabase) {
-    // Variáveis para armazenar o valor do depósito e a moeda selecionada
+fun Tela3(navController: NavController, database: AppDatabase, userId: Int) {
     var valorDeposito by remember { mutableStateOf("") }
-    var moedaSelecionada by remember { mutableStateOf("USD") } // Valor padrão, pode ser alterado.
 
-    // Função que será executada ao clicar nos botões para fazer o depósito
-    fun fazerDepositoComCotacoes(moeda: String, valor: Double) {
-        // Executa a função assíncrona de depósito, passando a moeda e o valor
+    // Função para realizar o depósito
+    fun fazerDeposito(moeda: String, valor: Double) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                // Chama getCotacoes dentro de uma corrotina
-                val cotacoes = getCotacoes()
+                // Busca a conta associada ao usuário
+                val account = database.accountDao().getAccountsForUser(userId).firstOrNull()
+                if (account != null) {
+                    // Atualiza o saldo com base na moeda selecionada
+                    when (moeda) {
+                        "real" -> account.real += valor
+                        "dollar" -> account.dollar += valor
+                        "euro" -> account.euro += valor
+                    }
+                    database.accountDao().update(account)
 
-                // Chama a função de depósito com as cotações obtidas
-                deposit(database, moeda, valor, cotacoes)
-
-                // Navegar para o perfil após o depósito
-                CoroutineScope(Dispatchers.Main).launch {
-                    navigateTo(navController, "tela2")
+                    // Volta para a Tela2 após o depósito
+                    CoroutineScope(Dispatchers.Main).launch {
+                        navController.popBackStack()
+                    }
+                } else {
+                    println("Conta não encontrada para o usuário ID: $userId")
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -64,14 +65,14 @@ fun Tela3(navController: NavController, database: AppDatabase) {
         ) {
             Text(
                 text = "Faça um depósito",
-                color = Color(0xff000000),
+                color = Color.Black,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Campo de entrada numérico para o valor do depósito
+            // Campo de entrada para o valor do depósito
             TextField(
                 value = valorDeposito,
                 onValueChange = { newValue ->
@@ -95,18 +96,23 @@ fun Tela3(navController: NavController, database: AppDatabase) {
             ) {
                 listOf("real", "euro", "dollar").forEach { moeda ->
                     Button(onClick = {
-                        // Agora, a lógica de depósito é executada aqui através da função
                         val valor = valorDeposito.toDoubleOrNull()
                         if (valor != null && valor > 0) {
-                            fazerDepositoComCotacoes(moeda, valor) // Chamando a função criada
+                            fazerDeposito(moeda, valor)
                         } else {
-                            // Exibir mensagem de erro para o usuário
                             println("Por favor, insira um valor válido.")
                         }
                     }) {
                         Text(text = moeda)
                     }
                 }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Botão de cancelar depósito
+            Button(onClick = { navController.popBackStack() }) {
+                Text(text = "Cancelar")
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -124,7 +130,7 @@ fun Tela3(navController: NavController, database: AppDatabase) {
                 ) {
                     Text(text = "Log Out")
                 }
-                Button(onClick = { navigateTo(navController, "tela2") }) {
+                Button(onClick = { navController.popBackStack() }) {
                     Text(text = "Meu Perfil")
                 }
             }

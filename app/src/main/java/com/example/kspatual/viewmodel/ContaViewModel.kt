@@ -16,7 +16,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.kspatual.api.Cotacoes
-import com.example.kspatual.dao.UserDao
 import com.example.kspatual.data.AppDatabase
 import com.example.kspatual.data.UserWithAccounts
 import com.example.kspatual.model.AccountModel
@@ -84,9 +83,9 @@ fun UserListScreen(database: AppDatabase) {
     }
 }
 
-public suspend fun insertSampleData(database: AppDatabase) {
-    val user = UserModel(name = "LucasLucas", cpf = "08645119990", email = "teste@teste.com", senha = "teste")
-    val account2 = AccountModel(userId = 3, real = 200.0, dollar = 50.0, euro = 30.0)
+suspend fun insertSampleData(database: AppDatabase) {
+    val user = UserModel(name = "Teste", cpf = "12345678900", email = "teste1", senha = "senha123")
+    val account = AccountModel(userId = 1, real = 100.0, dollar = 50.0, euro = 30.0)
     database.userDao().insert(user)
-    database.accountDao().insert(account2)
+    database.accountDao().insert(account)
 }

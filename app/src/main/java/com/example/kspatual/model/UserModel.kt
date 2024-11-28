@@ -2,6 +2,7 @@ package com.example.kspatual.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "users")
 data class UserModel(
@@ -10,4 +11,4 @@ data class UserModel(
     val cpf: String,
     val email: String,
     val senha: String
-)
+) : Serializable

@@ -18,23 +18,29 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.kspatual.api.Cotacoes
 import com.example.kspatual.data.AppDatabase
-import com.example.kspatual.viewmodel.UserListScreen
-import kotlinx.coroutines.launch
+import com.example.kspatual.model.AccountModel
+import com.example.kspatual.model.UserModel
 import com.example.kspatual.api.getCotacoes
+import com.example.kspatual.ui.theme.navigateTo
+import kotlinx.coroutines.launch
 
 @Composable
-fun Tela2(navController: NavController, database: AppDatabase) {
-    val coroutineScope = rememberCoroutineScope()
+fun Tela2(navController: NavController, database: AppDatabase, userId: Int) {
+    var user by remember { mutableStateOf<UserModel?>(null) }
+    var account by remember { mutableStateOf<AccountModel?>(null) }
     var cotacoes by remember { mutableStateOf<Cotacoes?>(null) }
+    val coroutineScope = rememberCoroutineScope()
 
-    // Busca cotações ao entrar na tela
-    LaunchedEffect(Unit) {
+    // Carrega dados do usuário e conta ao entrar na tela
+    LaunchedEffect(userId) {
         coroutineScope.launch {
+            user = database.userDao().get(userId)
+            account = database.accountDao().getAccountsForUser(userId).firstOrNull()
             cotacoes = getCotacoes()
         }
     }
 
-    val context = LocalContext.current // Contexto para uso no Intent
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -54,7 +60,7 @@ fun Tela2(navController: NavController, database: AppDatabase) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Bloco 1 - Cabeçalho "Meu Perfil"
+            // Cabeçalho "Meu Perfil"
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -72,19 +78,28 @@ fun Tela2(navController: NavController, database: AppDatabase) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Bloco 2 - Lista de Usuários
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFFcadae3))
-                    .padding(16.dp)
-            ) {
-                UserListScreen(database)
+            // Dados do Usuário
+            if (user != null) {
+                Text(text = "Bem-vindo, ${user!!.name}!")
+                Text(text = "User id: ${user!!.id}")
+            } else {
+                Text(text = "Usuário não encontrado.")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Dados da Conta
+            if (account != null) {
+                Text(text = "Saldo em Real: ${account!!.real} BRL")
+                Text(text = "Saldo em Dólar: ${account!!.dollar} USD")
+                Text(text = "Saldo em Euro: ${account!!.euro} EUR")
+            } else {
+                Text(text = "Sem conta associada.")
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Bloco 3 - Botões
+            // Botões
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -94,13 +109,17 @@ fun Tela2(navController: NavController, database: AppDatabase) {
                 Button(
                     onClick = {
                         navController.navigate("login") {
-                            popUpTo(0) { inclusive = true } // Remove todas as telas anteriores
+                            popUpTo(0) { inclusive = true }
                         }
                     }
                 ) {
                     Text(text = "Log Out")
                 }
-                Button(onClick = { navController.navigate("tela3") }) {
+                Button(onClick = {
+                    user?.let {
+                        navigateTo(navController, "tela3", it.id)
+                    }
+                }) {
                     Text(text = "Realizar Depósito")
                 }
             }
@@ -111,7 +130,7 @@ fun Tela2(navController: NavController, database: AppDatabase) {
             Button(
                 onClick = {
                     cotacoes?.let {
-                        shareCotacoes(context, it) // Chama a função de compartilhamento
+                        shareCotacoes(context, it)
                     }
                 }
             ) {
